@@ -1,0 +1,14 @@
+<aside class="sidebar collapsed">
+  <p-button
+    [icon]="
+      sideBarState.$mainSidebarVisible ? 'fa-solid fa-eye-slash' : 'fa-eye'
+    "
+    (onClick)="sideBarState.toggleMainSidebar()"
+  ></p-button>
+  <p-button
+    [icon]="
+      sideBarState.$secondarySidebarVisible ? 'fa-solid fa-eye-slash' : 'fa-eye'
+    "
+    (onClick)="sideBarState.toggleSecondarySidebar()"
+  ></p-button>
+</aside>
