@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AppConstants } from '../../../app.constants';
-import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CreateUserRequestModel } from '../../models/user/create-user-request.model';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { AppConstants } from '../../../app.constants';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +14,29 @@ export class HttpAuthService {
 
   constructor(private http: HttpClient) {}
 
+  public setStatusLogin(): void {
+    this.$loggedIn.next(true);
+  }
+
   public login(mail: string, password: string): Observable<boolean> {
     return this.http
-      .post(this.url.LOGIN, { email: mail, password: password })
+      .post<any>(
+        this.url.LOGIN,
+        {
+          email: mail,
+          password: password,
+        },
+        { observe: 'response' }
+      )
       .pipe(
-        map((result) => {
-          console.log(result);
-          if (true) {
+        map((result: HttpResponse<any>) => {
+          if (result.status === 200) {
             this.$loggedIn.next(true);
+            localStorage.setItem(AppConstants.LOCAL_STORAGE.USER_MAIL, mail);
+            console.log('Logged in');
+            return true;
           }
-          return true;
+          return false;
         })
       );
   }
