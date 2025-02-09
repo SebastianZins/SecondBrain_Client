@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+
+$sb-gray-0: #fcfcfa;
+$sb-gray-1: #c1c0c0;
+$sb-gray-2: #939293;
+$sb-gray-3: #727072;
+$sb-gray-4: #5b595c;
+$sb-gray-5: #403e41;
+$sb-gray-6: #2d2a2e;
+$sb-gray-7: #221f22;
+$sb-gray-8: #19181a;
+
+$sb-red: #ff6188;
+$sb-orange: #fc9867;
+$sb-yellow: #ffd866;
+$sb-green: #a9dc76;
+$sb-blue: #78dce8;
+$sb-purple: #ab9df2;
+
+$sb-primary: $sb-yellow;
+$sb-secondary: $sb-orange;
+$sb-tertiary: $sb-red;
+$sb-disabled: $sb-gray-4;
+$sb-success: $sb-green;
+$sb-danger: $sb-red;
+$sb-warning: $sb-yellow;
+
+$sb-text: $sb-gray-0;
+$sb-background: $sb-gray-6;
+$sb-dark-1: $sb-gray-7;
+$sb-dark-2: $sb-gray-8;
+
+body {
+  background-color: $sb-background;
+  color: $sb-text;
+  -moz-osx-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
+
+  font-family: "Rubik", serif;
+}

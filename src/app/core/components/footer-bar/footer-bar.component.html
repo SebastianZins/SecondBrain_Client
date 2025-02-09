@@ -1,0 +1,21 @@
+<footer class="footer-bar">
+  <div
+    class="footer-bar-left"
+    *ngIf="!(sideBarState.$mainSidebarVisible | async)"
+  >
+    <p-button
+      icon="fas fa-chevron-right"
+      (onClick)="sideBarState.toggleMainSidebar()"
+    ></p-button>
+  </div>
+  <div class="footer-bar-center"></div>
+  <div
+    class="footer-bar-right"
+    *ngIf="!(sideBarState.$secondarySidebarVisible | async)"
+  >
+    <p-button
+      icon="fas fa-chevron-left"
+      (onClick)="sideBarState.toggleSecondarySidebar()"
+    ></p-button>
+  </div>
+</footer>

@@ -1,0 +1,20 @@
+<div class="layout">
+  <sb-side-bar-icons></sb-side-bar-icons>
+  <sb-side-bar-main
+    *ngIf="sideBarState.$mainSidebarVisible | async"
+  ></sb-side-bar-main>
+  <div class="content">
+    <sb-top-bar></sb-top-bar>
+    <main class="content-body">
+      Monokai Pro is a color scheme, user interface theme and icon pack for code
+      editors. It has been designed with beautiful functionality in mind.
+      Carefully selected shades of color are the foundation of an
+      uncompromising, non-distractive user interface.
+      <router-outlet></router-outlet>
+    </main>
+    <sb-footer-bar></sb-footer-bar>
+  </div>
+  <sb-side-bar-secondary
+    *ngIf="sideBarState.$secondarySidebarVisible | async"
+  ></sb-side-bar-secondary>
+</div>
