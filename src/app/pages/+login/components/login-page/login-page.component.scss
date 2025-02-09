@@ -1,0 +1,46 @@
+@import "../../../../core/styles/theme.scss";
+
+.page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  max-height: 250px;
+  padding: 2rem;
+  background-color: $sb-dark-2;
+  border-radius: 1rem;
+}
+
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  label {
+    width: 100%;
+  }
+
+  ::ng-deep {
+    input,
+    p-password > div {
+      width: 100%;
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
