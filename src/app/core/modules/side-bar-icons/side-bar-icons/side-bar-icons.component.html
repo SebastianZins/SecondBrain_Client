@@ -1,0 +1,38 @@
+<aside class="sidebar collapsed">
+  <div class="sidebar-splitter-container">
+    <div class="sidebar-content">
+      <p-button
+        icon="fas fa-user"
+        size="small"
+        [text]="true"
+        (onClick)="logout()"
+      ></p-button>
+      <p-button
+        [icon]="
+          sideBarState.$mainSidebarVisible ? 'fa-solid fa-eye-slash' : 'fa-eye'
+        "
+        size="small"
+        [text]="true"
+        (onClick)="sideBarState.toggleMainSidebar()"
+      ></p-button>
+      <p-button
+        [icon]="
+          sideBarState.$secondarySidebarVisible
+            ? 'fa-solid fa-eye-slash'
+            : 'fa-eye'
+        "
+        size="small"
+        [text]="true"
+        (onClick)="sideBarState.toggleSecondarySidebar()"
+      ></p-button>
+    </div>
+    <div>
+      <p-button
+        icon="fas fa-lock"
+        size="small"
+        [text]="true"
+        (onClick)="logout()"
+      ></p-button>
+    </div>
+  </div>
+</aside>

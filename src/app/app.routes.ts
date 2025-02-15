@@ -13,6 +13,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: AppConstants.ROUTES.HOME,
+    redirectTo: '',
+  },
+  {
     path: AppConstants.ROUTES.LOGIN,
     component: LoginPageComponent,
     canActivate: [LoginGuard],
