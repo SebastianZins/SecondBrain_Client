@@ -1,0 +1,10 @@
+@import "../../../.flex-auto/theme.scss";
+
+.sidebar {
+  border-right: 1px solid $sb-gray-5;
+  background-color: $sb-dark-2;
+
+  .pInputText {
+    width: 100%;
+  }
+}

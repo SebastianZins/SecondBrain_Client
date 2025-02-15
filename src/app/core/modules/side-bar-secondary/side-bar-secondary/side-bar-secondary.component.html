@@ -1,0 +1,18 @@
+<aside class="sidebar">
+  <p-button
+    class="sidebar-button"
+    [icon]="
+      (sideBarState.$secondarySidebarVisible | async)
+        ? 'fas fa-chevron-right'
+        : 'fas fa-chevron-left'
+    "
+    (onClick)="sideBarState.toggleSecondarySidebar()"
+    severity="secondary"
+  ></p-button>
+  <div
+    class="sidebar-content"
+    *ngIf="sideBarState.$secondarySidebarVisible | async"
+  >
+    <p-tree [value]="$fileStructure | async" styleClass="w-full md:w-[30rem]" />
+  </div>
+</aside>

@@ -25,6 +25,7 @@ export abstract class AppConstants {
     FILE_STRUCTURE: {
       GET_STRUCTURE: this.FILE_STRUCTURE_URL,
       CREATE_FOLDER: this.FILE_STRUCTURE_URL,
+      DELETE_FOLDER: this.FILE_STRUCTURE_URL,
       UPDATE_FOLDER: this.FILE_STRUCTURE_URL,
       MOVE_FOLDER: this.FILE_STRUCTURE_URL + '/move',
     },

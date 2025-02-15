@@ -6,6 +6,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(
+      to bottom,
+      $sb-background 0%,
+      transparentize($sb-background, 0.3) 70%,
+      transparentize($sb-background, 1) 100%
+    ),
+    url(../../../../../assets/LoginBackground.jpg);
+  background-position: center center;
+  background-size: cover;
 }
 
 .center-cell {

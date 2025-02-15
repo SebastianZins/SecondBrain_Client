@@ -11,6 +11,12 @@
           "text-size-adjust: none"
         ]
       }
+    ],
+    "axe/forms": [
+      "default",
+      {
+        "label": "off"
+      }
     ]
   }
 }

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SideBarStateService {
-  public $mainSidebarVisible = new BehaviorSubject<boolean>(false);
+  public $mainSidebarVisible = new BehaviorSubject<boolean>(true);
   public $secondarySidebarVisible = new BehaviorSubject<boolean>(false);
 
   constructor() {}
