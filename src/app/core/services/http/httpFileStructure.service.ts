@@ -1,7 +1,7 @@
-import { FileStructureCreateRequestModel } from '../../models/file-structure/file-structure-create-request.model';
-import { FileStructureUpdateRequestModel } from '../../models/file-structure/file-structure-update-request.model';
-import { FileStructureMoveRequestModel } from '../../models/file-structure/file-structure-move-request.model';
-import { FileStructureModel } from '../../models/file-structure/file-structure.model';
+import { FileStructureCreateRequestModel } from '../../models/file-structure/structure-item/file-structure-create-request.model';
+import { FileStructureUpdateRequestModel } from '../../models/file-structure/structure-item/file-structure-update-request.model';
+import { FileStructureMoveRequestModel } from '../../models/file-structure/structure-item/file-structure-move-request.model';
+import { FileStructureModel } from '../../models/file-structure/structure-item/file-structure.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AppConstants } from 'src/app/app.constants';

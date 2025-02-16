@@ -4,11 +4,11 @@ import {
   ConfirmationService,
   MenuItem,
 } from 'primeng/api';
-import { FileStructureCreateRequestModel } from 'src/app/core/models/file-structure/file-structure-create-request.model';
-import { FileStructureMoveRequestModel } from 'src/app/core/models/file-structure/file-structure-move-request.model';
+import { FileStructureCreateRequestModel } from 'src/app/core/models/file-structure/structure-item/file-structure-create-request.model';
+import { FileStructureMoveRequestModel } from 'src/app/core/models/file-structure/structure-item/file-structure-move-request.model';
 import { SideBarStateService } from 'src/app/core/services/stateManagement/side-bar-state.service';
 import { HttpFileStructureService } from 'src/app/core/services/http/httpFileStructure.service';
-import { FileStructureModel } from 'src/app/core/models/file-structure/file-structure.model';
+import { FileStructureModel } from 'src/app/core/models/file-structure/structure-item/file-structure.model';
 import { EFileType } from 'src/app/core/enum/file-type.enum';
 import { TreeNodeDoubleClickEvent } from 'primeng/tree';
 import { BehaviorSubject } from 'rxjs';

@@ -1,8 +1,10 @@
 export abstract class AppConstants {
   public static BASE_URL: string = 'https://localhost:7296';
   public static AUTH_URL: string = this.BASE_URL + '/auth';
-  public static FILE_NODE_URL: string = this.BASE_URL + '/fileNode';
+  public static FILE_URL: string = this.BASE_URL + '/file';
+  public static FILE_SECTION_URL: string = this.BASE_URL + '/section/metaData';
   public static FILE_STRUCTURE_URL: string = this.BASE_URL + '/fileStructure';
+  public static LIST_SECTION_URL: string = this.BASE_URL + '/section/list';
   public static USER: string = this.BASE_URL + '/user';
 
   public static END_POINT = {
@@ -13,14 +15,24 @@ export abstract class AppConstants {
       REVOKE_TOKEN: this.AUTH_URL + '/token/revoke',
       SIGNUP: this.AUTH_URL + '/signup',
     },
-    FILE_NODE: {
-      GET: this.FILE_NODE_URL,
-      CREATE: this.FILE_NODE_URL,
-      DELETE: this.FILE_NODE_URL,
-      GET_BY_ID: this.FILE_NODE_URL + '/id',
-      GET_BY_NAME: this.FILE_NODE_URL + '/name',
-      GET_BY_PATH: this.FILE_NODE_URL + '/path',
-      UPDATE: this.FILE_NODE_URL,
+    FILE: {
+      CREATE: this.FILE_URL,
+      DELETE: this.FILE_URL,
+      GET: this.FILE_URL,
+      GET_BY_FOLDER: this.FILE_URL + '/byFolder',
+      UPDATE: this.FILE_URL,
+    },
+    FILE_SECTION: {
+      GET_BY_ID: this.FILE_SECTION_URL,
+      GET_BY_FILE: this.FILE_SECTION_URL + '/byFile',
+      UPDATE: this.FILE_SECTION_URL,
+    },
+    LIST_SECTION: {
+      CREATE: this.LIST_SECTION_URL,
+      DELETE: this.LIST_SECTION_URL,
+      GET_BY_ID: this.LIST_SECTION_URL,
+      GET_BY_FILE: this.LIST_SECTION_URL + '/byFile',
+      UPDATE: this.LIST_SECTION_URL,
     },
     FILE_STRUCTURE: {
       GET_STRUCTURE: this.FILE_STRUCTURE_URL,

@@ -1,4 +1,4 @@
-import { EFileType } from '../../enum/file-type.enum';
+import { EFileType } from '../../../enum/file-type.enum';
 
 export interface FileStructureCreateRequestModel {
   label: string;
