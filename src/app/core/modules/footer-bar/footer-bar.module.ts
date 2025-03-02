@@ -1,5 +1,5 @@
-import { FooterBarComponent } from './footer-bar/footer-bar.component';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
+import { FooterBarComponent } from './footer-bar.component';
 import { ButtonModule } from 'primeng/button';
 import { NgModule } from '@angular/core';
 

@@ -1,0 +1,29 @@
+<sb-add-section-dialog
+  [(isVisible)]="isAddDialogVisible"
+  [(sectionOrderId)]="addSectionOrderId"
+/>
+<sb-top-bar [data]="$fileData.value"></sb-top-bar>
+
+<div class="file-container">
+  <p-button
+    icon="fas fa-plus"
+    class="add-section-btn"
+    text="true"
+    (onClick)="addSection(0)"
+  ></p-button>
+  <ng-container
+    *ngFor="let section of $fileData.value?.sections ?? []; index as i"
+  >
+    <ng-container *ngIf="section.isVisible">
+      <ng-container [ngSwitch]="section.sectionType">
+        <sb-file-list-section *ngSwitchCase="2" [data]="section" />
+        <p-button
+          icon="fas fa-plus"
+          class="add-section-btn"
+          text="true"
+          (onClick)="addSection(i + 1)"
+        ></p-button>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

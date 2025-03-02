@@ -1,0 +1,24 @@
+<sb-section-overview-dialog
+  [(isVisible)]="isSectionOverviewVisible"
+  [sectionData]="data?.sections ?? []"
+/>
+
+<nav class="content-header" #fileTopBar>
+  <div>
+    <h1>{{ data?.title }}</h1>
+  </div>
+  <div class="button-group">
+    <p-button
+      icon="pi pi-ellipsis-v"
+      [rounded]="true"
+      size="small"
+      [text]="true"
+      (onClick)="topBarMenuContext.show($event)"
+    ></p-button>
+    <p-contextmenu
+      #topBarMenuContext
+      [target]="fileTopBar"
+      [model]="contextMenuItems"
+    />
+  </div>
+</nav>

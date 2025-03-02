@@ -8,6 +8,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: AppConstants.ROUTES.FILE,
+    loadChildren: () =>
+      import('./pages/+file/file-page.module').then((m) => m.FilePageModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     component: HomePageComponent,
     canActivate: [AuthGuard],

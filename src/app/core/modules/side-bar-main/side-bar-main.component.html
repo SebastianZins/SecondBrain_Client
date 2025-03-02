@@ -1,0 +1,92 @@
+<aside class="sidebar">
+  <div
+    #treeComponent
+    class="sidebar-content"
+    *ngIf="sideBarState.$mainSidebarVisible | async"
+    aria-haspopup="true"
+  >
+    <p-tree
+      selectionMode="single"
+      [value]="$fileStructure | async"
+      styleClass="w-full md:w-[30rem]"
+      [draggableNodes]="true"
+      [droppableNodes]="true"
+      draggableScope="self"
+      droppableScope="self"
+      [contextMenu]="treeNodeContext"
+      (onNodeDrop)="onItemMoved($event)"
+      (onNodeSelect)="onItemSelect($event)"
+      (onNodeUnselect)="onItemSelect($event)"
+      (onNodeContextMenuSelect)="onRightClickItem($event)"
+      [loading]="isLoading"
+    >
+      <ng-template let-node pTemplate="1">
+        <i [class]="node.expanded ? 'far fa-folder-open' : 'fas fa-folder'"></i>
+        <span>
+          {{ node.label }}
+        </span>
+      </ng-template>
+      <ng-template let-node pTemplate="2">
+        <i class="far fa-file"></i>
+        <span>
+          {{ node.label }}
+        </span>
+      </ng-template>
+    </p-tree>
+    <p-contextmenu
+      #treeNodeContext
+      [model]="treeNodeContextItems"
+      (onShow)="treeComponentContext.hide()"
+      appendTo="body"
+    />
+    <p-contextMenu
+      #treeComponentContext
+      [target]="treeComponent"
+      (onShow)="treeNodeContext.hide()"
+      [model]="treeComponentContextItems"
+      appendTo="body"
+    ></p-contextMenu>
+  </div>
+  <p-button
+    class="sidebar-button"
+    [icon]="
+      (sideBarState.$mainSidebarVisible | async)
+        ? 'fas fa-chevron-left'
+        : 'fas fa-chevron-right'
+    "
+    (onClick)="sideBarState.toggleMainSidebar()"
+    severity="secondary"
+  ></p-button>
+</aside>
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="isNewItemDialogVisible"
+  [style]="{ width: '25rem' }"
+>
+  <h3>New Folder</h3>
+  <span class="p-text-secondary block mb-8">Update your information.</span>
+  <div class="flex items-center gap-4 mb-8">
+    <label for="folderName" class="font-semibold w-24">Name</label>
+    <input
+      pInputText
+      id="folderName"
+      class="flex-auto"
+      autocomplete="off"
+      [(ngModel)]="newFolderName"
+    />
+  </div>
+  <div class="flex justify-end gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="closeAddFolder()" />
+    <p-button
+      label="Save"
+      [disabled]="!newDialogType"
+      (click)="
+        newDialogType === 1
+          ? addFolder(newFolderName!)
+          : addFile(newFolderName!)
+      "
+    />
+  </div>
+</p-dialog>
+<p-confirmdialog></p-confirmdialog>

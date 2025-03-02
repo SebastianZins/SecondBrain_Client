@@ -1,7 +1,7 @@
-import { FileStructureCreateRequestModel } from '../../models/file-structure/file-structure-create-request.model';
-import { FileStructureUpdateRequestModel } from '../../models/file-structure/file-structure-update-request.model';
-import { FileStructureMoveRequestModel } from '../../models/file-structure/file-structure-move-request.model';
-import { FileStructureModel } from '../../models/file-structure/file-structure.model';
+import { FileStructureCreateRequestModel } from '../../models/file-structure/structure-item/file-structure-create-request.model';
+import { FileStructureUpdateRequestModel } from '../../models/file-structure/structure-item/file-structure-update-request.model';
+import { FileStructureMoveRequestModel } from '../../models/file-structure/structure-item/file-structure-move-request.model';
+import { FileStructureModel } from '../../models/file-structure/structure-item/file-structure.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AppConstants } from 'src/app/app.constants';
@@ -15,18 +15,22 @@ export class HttpFileStructureService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Get and load complete file structure
+   */
   public fetchFileStructure(): void {
     this.getFileStructure().subscribe(() => {});
   }
 
+  /**
+   * Get complete file structure as observable
+   * @returns {Observable<FileStructureModel[]>}
+   */
   public getFileStructure(): Observable<FileStructureModel[]> {
     return this.http.get(this.url.GET_STRUCTURE, { observe: 'response' }).pipe(
       map((result) => {
         if (result.status === 200) {
-          console.log(result.body);
-          this.$fileStructure.next(
-            this.castToModel(result.body as FileStructureModel[])
-          );
+          this.$fileStructure.next(result.body as FileStructureModel[]);
           return result.body as FileStructureModel[];
         }
         return [];
@@ -34,6 +38,11 @@ export class HttpFileStructureService {
     );
   }
 
+  /**
+   * create a new folder in the file structure
+   * @param {FileStructureCreateRequestModel} body
+   * @returns {Observable<FileStructureModel[]>}
+   */
   public createFolder(
     body: FileStructureCreateRequestModel
   ): Observable<FileStructureModel[]> {
@@ -42,9 +51,7 @@ export class HttpFileStructureService {
       .pipe(
         map((result) => {
           if (result.status === 200) {
-            this.$fileStructure.next(
-              this.castToModel(result.body as FileStructureModel[])
-            );
+            this.$fileStructure.next(result.body as FileStructureModel[]);
             return result.body as FileStructureModel[];
           }
           return [];
@@ -52,6 +59,11 @@ export class HttpFileStructureService {
       );
   }
 
+  /**
+   * update folder name
+   * @param {FileStructureUpdateRequestModel} body
+   * @returns {Observable<FileStructureModel[]>}
+   */
   public updateFolder(
     body: FileStructureUpdateRequestModel
   ): Observable<FileStructureModel[]> {
@@ -60,9 +72,7 @@ export class HttpFileStructureService {
       .pipe(
         map((result) => {
           if (result.status === 200) {
-            this.$fileStructure.next(
-              this.castToModel(result.body as FileStructureModel[])
-            );
+            this.$fileStructure.next(result.body as FileStructureModel[]);
             return result.body as FileStructureModel[];
           }
           return [];
@@ -70,6 +80,9 @@ export class HttpFileStructureService {
       );
   }
 
+  /**
+   * delete folder
+   */
   public deleteFolder(id: string): Observable<FileStructureModel[]> {
     const params = new HttpParams().set('id', id);
     return this.http
@@ -77,9 +90,7 @@ export class HttpFileStructureService {
       .pipe(
         map((result) => {
           if (result.status === 200) {
-            this.$fileStructure.next(
-              this.castToModel(result.body as FileStructureModel[])
-            );
+            this.$fileStructure.next(result.body as FileStructureModel[]);
             return result.body as FileStructureModel[];
           }
           return [];
@@ -87,6 +98,11 @@ export class HttpFileStructureService {
       );
   }
 
+  /**
+   * move folder -> change order in same folder or move to other folder
+   * @param {FileStructureMoveRequestModel} data
+   * @returns {Observable<FileStructureModel[]>}
+   */
   public moveFolder(
     data: FileStructureMoveRequestModel
   ): Observable<FileStructureModel[]> {
@@ -95,20 +111,11 @@ export class HttpFileStructureService {
       .pipe(
         map((result) => {
           if (result.status === 200) {
-            this.$fileStructure.next(
-              this.castToModel(result.body as FileStructureModel[])
-            );
+            this.$fileStructure.next(result.body as FileStructureModel[]);
             return result.body as FileStructureModel[];
           }
           return [];
         })
       );
-  }
-
-  private castToModel(data: FileStructureModel[]): FileStructureModel[] {
-    return data.map((d) => ({
-      ...d,
-      isEditing: false,
-    }));
   }
 }

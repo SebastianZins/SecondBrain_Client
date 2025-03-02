@@ -1,10 +1,9 @@
 import { SideBarSecondaryModule } from '../side-bar-secondary/side-bar-secondary.module';
 import { SideBarIconsModule } from '../side-bar-icons/side-bar-icons.module';
-import { PageLayoutComponent } from './page-layout/page-layout.component';
 import { SideBarMainModule } from '../side-bar-main/side-bar-main.module';
 import { FooterBarModule } from '../footer-bar/footer-bar.module';
-import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
-import { TopBarModule } from '../top-bar/top-bar.module';
+import { CommonModule, NgIf, AsyncPipe } from '@angular/common';
+import { PageLayoutComponent } from './page-layout.component';
 import { RouterOutlet } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -16,7 +15,6 @@ import { NgModule } from '@angular/core';
     SideBarMainModule,
     SideBarIconsModule,
     SideBarSecondaryModule,
-    TopBarModule,
     FooterBarModule,
     NgIf,
     AsyncPipe,

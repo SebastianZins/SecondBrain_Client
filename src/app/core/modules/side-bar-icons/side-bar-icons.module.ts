@@ -1,4 +1,4 @@
-import { SideBarIconsComponent } from './side-bar-icons/side-bar-icons.component';
+import { SideBarIconsComponent } from './side-bar-icons.component';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { NgModule } from '@angular/core';

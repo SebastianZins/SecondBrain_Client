@@ -1,0 +1,36 @@
+<p-dialog
+  header="Update Section Data"
+  [(visible)]="isVisible"
+  class="update-section-data-dialog"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [modal]="true"
+  (onHide)="onClose()"
+  *ngIf="sectionData"
+>
+  <article class="section-input">
+    <div class="section-input-container">
+      <div class="section-input-group">
+        <label>Section Title</label>
+        <input pInputText [(ngModel)]="sectionData.title" />
+      </div>
+      <div class="section-input-group">
+        <label>Section Subtitle</label>
+        <input pInputText [(ngModel)]="sectionData.subtitle" />
+      </div>
+    </div>
+    <div class="button-group">
+      <p-button
+        label="Cancel"
+        [text]="true"
+        severity="secondary"
+        (click)="({})"
+      ></p-button>
+      <p-button
+        label="Update Data"
+        (click)="updateData()"
+        [disabled]="sectionData.title === undefined"
+      ></p-button>
+    </div>
+  </article>
+</p-dialog>

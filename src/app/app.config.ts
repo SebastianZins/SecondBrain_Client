@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideZoneChangeDetection, ApplicationConfig } from '@angular/core';
 import { withInterceptors, provideHttpClient } from '@angular/common/http';
 import { HttpAuthService } from './core/services/http/httpAuth.service';
+import { HttpFileService } from './core/services/http/httpFile.service';
 import { LoginGuard } from './core/guards/login.guard';
 import { AuthGuard } from './core/guards/auth.guard';
 import { Theme } from './core/styles/theme.style';
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
 
     HttpAuthService,
     HttpFileStructureService,
+    HttpFileService,
 
     SideBarStateService,
   ],
