@@ -1,6 +1,6 @@
-import { SideBarMainComponent } from './side-bar-main/side-bar-main.component';
+import { AsyncPipe, CommonModule, NgClass, NgIf } from '@angular/common';
 import { TreeDragDropService, ConfirmationService } from 'primeng/api';
-import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
+import { SideBarMainComponent } from './side-bar-main.component';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ContextMenu } from 'primeng/contextmenu';
@@ -23,6 +23,7 @@ import { NgModule } from '@angular/core';
     CommonModule,
     InputTextModule,
     FormsModule,
+    NgClass,
     DialogModule,
     ConfirmDialog,
   ],

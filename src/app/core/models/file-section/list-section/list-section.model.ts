@@ -1,5 +1,5 @@
 import { FileSectionModel } from '../file-section/file-section.model';
 
 export interface ListSectionModel extends FileSectionModel {
-  items: string[];
+  items: { value: string; isSelected?: boolean }[];
 }

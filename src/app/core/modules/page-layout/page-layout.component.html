@@ -2,7 +2,6 @@
   <sb-side-bar-icons *ngIf="$isLoggedIn | async"></sb-side-bar-icons>
   <sb-side-bar-main *ngIf="$isLoggedIn | async"></sb-side-bar-main>
   <div class="content">
-    <sb-top-bar *ngIf="$isLoggedIn | async"></sb-top-bar>
     <main class="content-body">
       <router-outlet></router-outlet>
     </main>

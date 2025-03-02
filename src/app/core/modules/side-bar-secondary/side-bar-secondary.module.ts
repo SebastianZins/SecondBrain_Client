@@ -1,4 +1,4 @@
-import { SideBarSecondaryComponent } from './side-bar-secondary/side-bar-secondary.component';
+import { SideBarSecondaryComponent } from './side-bar-secondary.component';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';

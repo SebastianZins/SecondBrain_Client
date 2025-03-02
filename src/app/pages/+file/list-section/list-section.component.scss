@@ -1,0 +1,24 @@
+@import "../../../core/styles/theme.scss";
+
+.list-section {
+  .list-item-selected {
+    background-color: $sb-gray-5;
+  }
+
+  .list-section-input {
+    width: 100%;
+    border: unset;
+    background: unset;
+    padding: 0;
+    border-radius: 0;
+
+    &:hover {
+      background-color: $sb-gray-4;
+    }
+
+    &:focus {
+      color: $sb-primary;
+      border-bottom: 1px solid $sb-primary;
+    }
+  }
+}

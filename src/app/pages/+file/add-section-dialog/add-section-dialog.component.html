@@ -1,0 +1,47 @@
+<p-dialog
+  header="Add new Section"
+  [(visible)]="isVisible"
+  class="add-section-dialog"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [modal]="true"
+  (onHide)="onClose()"
+>
+  <div class="dialog-body">
+    <nav class="section-selection">
+      <div
+        class="section-selection-btn"
+        [ngClass]="{ selected: selectedType === sectionType.id }"
+        *ngFor="let sectionType of sectionTypes"
+        (click)="selectType(sectionType.id)"
+      >
+        {{ sectionType.label }}
+      </div>
+    </nav>
+    <article class="section-input">
+      <div class="section-input-container">
+        <div class="section-input-group">
+          <label>Section Title</label>
+          <input pInputText [(ngModel)]="title" />
+        </div>
+        <div class="section-input-group">
+          <label>Section Subtitle</label>
+          <input pInputText [(ngModel)]="subtitle" />
+        </div>
+      </div>
+      <div class="button-group">
+        <p-button
+          label="Cancel"
+          [text]="true"
+          severity="secondary"
+          (click)="({})"
+        ></p-button>
+        <p-button
+          label="Add Section"
+          (click)="addSection()"
+          [disabled]="title === undefined"
+        ></p-button>
+      </div>
+    </article>
+  </div>
+</p-dialog>

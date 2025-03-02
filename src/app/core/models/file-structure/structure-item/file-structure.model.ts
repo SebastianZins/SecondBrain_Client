@@ -6,5 +6,4 @@ export interface FileStructureModel {
   type: EFileType;
   treeId: number;
   children?: FileStructureModel[] | null;
-  isEditing: boolean;
 }

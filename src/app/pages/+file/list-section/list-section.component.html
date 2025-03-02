@@ -1,0 +1,66 @@
+<sb-change-metadata-dialog
+  [(isVisible)]="isChangeMetadataDialogVisible"
+  [sectionData]="data"
+/>
+
+<div class="section list-section">
+  <div class="section-header" #topBar>
+    <div class="section-header-titles">
+      <h2>{{ data.title }}</h2>
+      <h3>{{ data.subtitle }}</h3>
+    </div>
+    <div class="button-group">
+      <p-button
+        icon="pi pi-save"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="saveData()"
+        *ngIf="isDataChanged"
+      ></p-button>
+      <p-button
+        icon="pi pi-ellipsis-v"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="topBarMenuContext.show($event)"
+      ></p-button>
+      <p-contextmenu
+        #topBarMenuContext
+        [target]="topBar"
+        [model]="contextMenuItems"
+      />
+    </div>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li
+        *ngFor="let item of data.items; index as i"
+        [class.list-item-selected]="item.isSelected === true"
+        (keydown)="onItemKeydown($event, i)"
+        (keyup)="onItemKeyup($event)"
+        (click)="onItemClick(i)"
+      >
+        <input
+          pInputText
+          #input
+          type="text"
+          class="list-section-input"
+          [(ngModel)]="item.value"
+          (keydown.enter)="updateData(item.value, i)"
+        />
+      </li>
+      <li>
+        <input
+          #newInput
+          class="list-section-input"
+          pInputText
+          type="text"
+          placeholder="..."
+          [(ngModel)]="newItem"
+          (keydown)="onNewItemKeyUp($event)"
+        />
+      </li>
+    </ul>
+  </div>
+</div>

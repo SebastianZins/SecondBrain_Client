@@ -1,0 +1,39 @@
+@import "./theme.scss";
+
+.section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-left: 1rem;
+    background-color: $sb-dark-1;
+    border-top: 1px solid $sb-gray-5;
+    border-bottom: 1px solid $sb-gray-5;
+  }
+
+  .section-body {
+    padding-right: 1rem;
+  }
+
+  .section-header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    h3 {
+      margin-top: 0;
+    }
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  .button-group {
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 1rem;
+  }
+}

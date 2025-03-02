@@ -5,7 +5,6 @@
     *ngIf="sideBarState.$mainSidebarVisible | async"
     aria-haspopup="true"
   >
-    <p-button label="Add Folder" (onClick)="newRootFolder()"></p-button>
     <p-tree
       selectionMode="single"
       [value]="$fileStructure | async"
@@ -15,22 +14,23 @@
       draggableScope="self"
       droppableScope="self"
       [contextMenu]="treeNodeContext"
-      (onNodeDrop)="folderMoved($event)"
-      (onNodeContextMenuSelect)="selectFolder($event)"
-      (onNodeDoubleClick)="onNodeDoubleClick($event)"
-      [(selection)]="selectedFolder"
+      (onNodeDrop)="onItemMoved($event)"
+      (onNodeSelect)="onItemSelect($event)"
+      (onNodeUnselect)="onItemSelect($event)"
+      (onNodeContextMenuSelect)="onRightClickItem($event)"
+      [loading]="isLoading"
     >
       <ng-template let-node pTemplate="1">
-        <span *ngIf="!node.isEditing">
+        <i [class]="node.expanded ? 'far fa-folder-open' : 'fas fa-folder'"></i>
+        <span>
           {{ node.label }}
         </span>
-        <input
-          pInputText
-          *ngIf="node.isEditing"
-          [(ngModel)]="node.label"
-          (blur)="onEditComplete(node)"
-          (keydown.enter)="onEditComplete(node)"
-        />
+      </ng-template>
+      <ng-template let-node pTemplate="2">
+        <i class="far fa-file"></i>
+        <span>
+          {{ node.label }}
+        </span>
       </ng-template>
     </p-tree>
     <p-contextmenu
@@ -61,7 +61,7 @@
 <p-dialog
   header="Edit Profile"
   [modal]="true"
-  [(visible)]="isNewFolderDialogVisible"
+  [(visible)]="isNewItemDialogVisible"
   [style]="{ width: '25rem' }"
 >
   <h3>New Folder</h3>
@@ -78,7 +78,15 @@
   </div>
   <div class="flex justify-end gap-2">
     <p-button label="Cancel" severity="secondary" (click)="closeAddFolder()" />
-    <p-button label="Save" (click)="addFolder()" />
+    <p-button
+      label="Save"
+      [disabled]="!newDialogType"
+      (click)="
+        newDialogType === 1
+          ? addFolder(newFolderName!)
+          : addFile(newFolderName!)
+      "
+    />
   </div>
 </p-dialog>
 <p-confirmdialog></p-confirmdialog>

@@ -21,15 +21,16 @@ export abstract class AppConstants {
       GET: this.FILE_URL,
       GET_BY_FOLDER: this.FILE_URL + '/byFolder',
       UPDATE: this.FILE_URL,
+      UPDATE_ORDER: this.FILE_URL + '/order',
     },
     FILE_SECTION: {
+      CREATE: this.FILE_SECTION_URL,
+      DELETE: this.FILE_SECTION_URL,
       GET_BY_ID: this.FILE_SECTION_URL,
       GET_BY_FILE: this.FILE_SECTION_URL + '/byFile',
       UPDATE: this.FILE_SECTION_URL,
     },
     LIST_SECTION: {
-      CREATE: this.LIST_SECTION_URL,
-      DELETE: this.LIST_SECTION_URL,
       GET_BY_ID: this.LIST_SECTION_URL,
       GET_BY_FILE: this.LIST_SECTION_URL + '/byFile',
       UPDATE: this.LIST_SECTION_URL,
@@ -50,6 +51,7 @@ export abstract class AppConstants {
   };
 
   public static ROUTES = {
+    FILE: 'file',
     LOGIN: 'login',
     SIGNUP: 'signup',
     NOT_FOUND: 'not-found',

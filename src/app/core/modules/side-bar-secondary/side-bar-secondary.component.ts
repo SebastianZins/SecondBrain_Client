@@ -2,7 +2,7 @@ import { FileStructureModel } from 'src/app/core/models/file-structure/structure
 import { SideBarStateService } from 'src/app/core/services/stateManagement/side-bar-state.service';
 import { HttpFileStructureService } from 'src/app/core/services/http/httpFileStructure.service';
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';ubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'sb-side-bar-secondary',
