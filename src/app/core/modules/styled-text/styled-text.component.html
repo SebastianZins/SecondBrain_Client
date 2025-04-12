@@ -1,0 +1,6 @@
+<ng-content *ngFor="let word of parsedText">
+  <span *ngIf="!word.isTag">{{ word.text }}</span>
+  <span *ngIf="word.isTag" class="tag-text" [pTooltip]="'Go to' + word.text">
+    <a (click)="goToTag(word.text)">{{ word.text }}</a>
+  </span>
+</ng-content>

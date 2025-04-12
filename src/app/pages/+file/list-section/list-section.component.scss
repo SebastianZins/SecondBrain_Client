@@ -5,6 +5,14 @@
     background-color: $sb-gray-5;
   }
 
+  .list-section-item {
+    width: 100%;
+
+    &:hover {
+      background-color: $sb-gray-4;
+    }
+  }
+
   .list-section-input {
     width: 100%;
     border: unset;
@@ -19,6 +27,12 @@
     &:focus {
       color: $sb-primary;
       border-bottom: 1px solid $sb-primary;
+    }
+  }
+
+  .styled-text {
+    &:focus-visible {
+      outline: unset;
     }
   }
 }

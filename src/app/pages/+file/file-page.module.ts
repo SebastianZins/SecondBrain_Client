@@ -3,6 +3,7 @@ import { ChangeMetadataDialogComponent } from './change-metadata-dialog/change-m
 import { AddSectionDialogComponent } from './add-section-dialog/add-section-dialog.component';
 import { HttpListSectionService } from 'src/app/core/services/http/httpListSection.service';
 import { HttpFileSectionService } from 'src/app/core/services/http/httpFileSection.service';
+import { StyledTextModule } from '../../core/modules/styled-text/styled-text.module';
 import { ListSectionComponent } from './list-section/list-section.component';
 import { AsyncPipe, CommonModule, NgFor, NgSwitch } from '@angular/common';
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -12,6 +13,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { DragDropModule } from 'primeng/dragdrop';
 import { provideRouter } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
@@ -33,12 +35,14 @@ import { NgModule } from '@angular/core';
     NgSwitch,
     AsyncPipe,
     FormsModule,
+    TableModule,
     ButtonModule,
     DialogModule,
     CommonModule,
+    TooltipModule,
     DragDropModule,
-    TableModule,
     InputTextModule,
+    StyledTextModule,
     ContextMenuModule,
     ToggleSwitchModule,
   ],

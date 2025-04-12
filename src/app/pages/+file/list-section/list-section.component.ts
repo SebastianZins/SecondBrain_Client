@@ -21,16 +21,19 @@ import {
   styleUrl: './list-section.component.scss',
 })
 export class ListSectionComponent implements OnInit {
-  @ViewChildren('input') inputElements!: QueryList<ElementRef>;
+  @ViewChildren('listItem') listElements!: QueryList<ElementRef>;
   @ViewChild('newInput') newInputElement!: ElementRef;
   @Input() data!: ListSectionModel;
 
   public newItem?: string;
 
   public shiftKeyPressed: boolean = false;
+  public ctrlKeyPressed: boolean = false;
+
   public selectionStart?: number;
   public selectionEnd?: number;
-  public lastSelected: number | undefined | null = undefined;
+  public activeElement?: number;
+  public newElementActive: boolean = false;
 
   public isChangeMetadataDialogVisible: boolean = false;
 
@@ -59,228 +62,76 @@ export class ListSectionComponent implements OnInit {
   ngOnInit(): void {}
 
   /**
-   * Get a list of all selected items
-   *
-   * @private
-   * @return {*}  {{ value: string; index: number }[]}
-   * @memberof ListSectionComponent
-   */
-  private _getSelectedItems(): { value: string; index: number }[] {
-    return this.data.items
-      .map((d, i) => ({ ...d, index: i }))
-      .filter((d) => d.isSelected === true)
-      .map((d) => ({ value: d.value, index: d.index }));
-  }
-
-  /**
-   * Handle up key is pressed
-   * if shift is currectly pressed select or unselect other elements
-   * else stop multi-selection
-   *
-   * @private
+   * handle existing item clicked
+   * @return {*}  {void}
    * @param {number} index
-   * @return {*}  {void}
    * @memberof ListSectionComponent
    */
-  private _handleArrowUpPressed(index: number): void {
-    this.lastSelected = index;
-    if (index === 0) {
-      return;
-    }
-    if (this.shiftKeyPressed) {
-      this.selectionEnd = index - 1;
-      this.data.items[index - 1].isSelected = true;
-      this.inputElements.toArray()[index - 1].nativeElement.focus();
-      if (this.selectionStart! < index && this.selectionEnd! > index) {
-        this.data.items[index + 1].isSelected = false;
-      }
-    } else {
-      if (this.selectionStart) {
-        this._resetSelection();
-      }
-      this.inputElements.toArray()[index - 1].nativeElement.focus();
-      this.data.items[index].isSelected = false;
-      this.data.items[index - 1].isSelected = true;
-    }
+  public onItemClick(index: number): void {
+    this._selectItem(index);
+    this.activeElement = this.selectionEnd!;
+    this.shiftKeyPressed = false;
+    this.ctrlKeyPressed = false;
+    this._focusItem(this.selectionEnd!);
   }
 
   /**
-   * Handle down key is pressed
-   * if shift is currectly pressed select or unselect other elements
-   * else stop multi-selection
-   *
-   * @private
+   * handle key presses on existing item
+   * @return {*}  {void}
    * @param {number} index
-   * @return {*}  {void}
+   * @param {KeyboardEvent} event
    * @memberof ListSectionComponent
    */
-  private _handleArrowDownPressed(index: number): void {
-    this.lastSelected = index;
-    if (this.shiftKeyPressed) {
-      this.selectionEnd = index + 1;
-      this.data.items[index + 1].isSelected = true;
-      this.inputElements.toArray()[index + 1].nativeElement.focus();
-      if (this.selectionStart! > index && this.selectionEnd! < index) {
-        this.data.items[index - 1].isSelected = false;
-      }
-    } else {
-      if (this.selectionStart) {
-        this._resetSelection();
-      }
-      if (index + 1 === this.inputElements.toArray().length) {
-        this.newInputElement.nativeElement.focus();
-        this._resetSelection();
-        this.lastSelected = null;
-      } else {
-        this.inputElements.toArray()[index + 1].nativeElement.focus();
-        this.data.items[index].isSelected = false;
-        this.data.items[index + 1].isSelected = true;
-      }
+  public onItemKeydown(event: KeyboardEvent): void {
+    console.log(event);
+    switch (event.key) {
+      case 'ArrowDown':
+        this._handleArrowDownPressed();
+        break;
+      case 'ArrowUp':
+        this._handleArrowUpPressed();
+        break;
+      case 'Escape':
+        this._handleEscapePressed();
+        break;
+      case 'Delete':
+        this._handleDeletePressed();
+        break;
+      case 'Shift':
+        this._handleShiftPressed();
+        break;
+      case 'Control':
+        this._handleCtrlPressed();
+        break;
+      case 's':
+        event.preventDefault();
+        this._handleSPressed();
+        break;
+      default:
+        if (this.selectionEnd !== undefined) {
+          this._activateItem();
+        }
+        break;
     }
   }
 
   /**
-   * handle escape button press
-   * -> stop selection
-   *
-   * @private
+   * handle key up on existing item
    * @return {*}  {void}
+   * @param {KeyboardEvent} event
    * @memberof ListSectionComponent
    */
-  private _handleEscapePressed(): void {
-    if (this._getSelectedItems().length > 0) {
-      this._resetSelection();
+  public onItemKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Shift') {
+      this.shiftKeyPressed = false;
     }
-  }
-
-  /**
-   * handle delete button press
-   * -> delete selected items
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _handleDeletePressed(): void {
-    this.data.items = this.data.items.filter((item) => !item.isSelected);
-    this.isDataChanged = true;
-  }
-
-  /**
-   * handle shift button press
-   * -> start or continue multi select
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _handleShiftPressed(index: number): void {
-    if (!this.shiftKeyPressed) {
-      this.shiftKeyPressed = true;
-      this.selectionStart = index;
-      this.selectionEnd = index;
-      this.data.items[index].isSelected = true;
-      this.inputElements.toArray()[index].nativeElement.focus();
-    }
-  }
-
-  /**
-   * handle up button press on new element
-   * -> go to last existing element
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _handleNewItemArrowUpPressed(): void {
-    if (this.data.items.length > 0) {
-      this.data.items[this.data.items.length - 1].isSelected = true;
-      const inputElements = this.inputElements.toArray();
-      inputElements[inputElements.length - 1].nativeElement.focus();
-    }
-  }
-
-  /**
-   * reset selected items
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _resetSelection(): void {
-    this.selectionStart = undefined;
-    this.selectionEnd = undefined;
-    this.data.items.forEach((d) => (d.isSelected = undefined));
-  }
-
-  /**
-   * hide this section
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _hideSection(): void {
-    this.data.isVisible = false;
-    this._fileSectionService.updateSection(this.data).subscribe((ok) => {
-      if (ok) {
-        this._fileService.refreshFileData();
-      }
-    });
-  }
-
-  /**
-   * delete this section
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  private _deleteSection(): void {
-    this._fileSectionService.deleteSection(this.data.id).subscribe((ok) => {
-      if (ok) {
-        this._fileService.refreshFileData();
-      }
-    });
-  }
-
-  /**
-   * handle enter press on new item
-   * -> create new item
-   *
-   * @private
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  public _handleNewItemEnterPressed(): void {
-    if (this.newItem && this.newItem !== '') {
-      this.data.items.push({ value: this.newItem! });
-      this.isDataChanged = true;
-      this.newItem = undefined;
-    }
-  }
-
-  /**
-   * update data
-   *
-   * @return {*}  {void}
-   * @memberof ListSectionComponent
-   */
-  public updateData(data: string, index: number): void {
-    if (data === '') {
-      this.data.items.splice(index, 1);
-      this.isDataChanged = true;
-    }
-    if (index + 1 === this.inputElements.toArray().length) {
-      this.newInputElement.nativeElement.focus();
-    } else {
-      this.inputElements.toArray()[index + 1].nativeElement.focus();
+    if (event.key === 'Control') {
+      this.ctrlKeyPressed = false;
     }
   }
 
   /**
    * handle button presses on new item input
-   *
    * @return {*}  {void}
    * @param {KeyboardEvent} event
    * @memberof ListSectionComponent
@@ -297,68 +148,233 @@ export class ListSectionComponent implements OnInit {
   }
 
   /**
-   * handle key presses on existing item
-   *
-   * @return {*}  {void}
+   * Handle up key is pressed
+   * if shift is currectly pressed select or unselect other elements
+   * else stop multi-selection
+   * @private
    * @param {number} index
-   * @param {KeyboardEvent} event
-   * @memberof ListSectionComponent
-   */
-  public onItemKeydown(event: KeyboardEvent, index: number): void {
-    switch (event.key) {
-      case 'ArrowDown':
-        this._handleArrowDownPressed(index);
-        break;
-      case 'ArrowUp':
-        this._handleArrowUpPressed(index);
-        break;
-      case 'Escape':
-        this._handleEscapePressed();
-        break;
-      case 'Delete':
-        this._handleDeletePressed();
-        break;
-      case 'Shift':
-        this._handleShiftPressed(index);
-        break;
-    }
-  }
-
-  /**
-   * handle key up on existing item
-   *
    * @return {*}  {void}
-   * @param {KeyboardEvent} event
    * @memberof ListSectionComponent
    */
-  public onItemKeyup(event: KeyboardEvent): void {
-    if (event.key === 'Shift') {
-      this.shiftKeyPressed = false;
+  private _handleArrowUpPressed(): void {
+    if (this.selectionEnd === 0) {
+      return;
     }
-  }
-
-  /**
-   * handle existing item clicked
-   *
-   * @return {*}  {void}
-   * @param {number} index
-   * @memberof ListSectionComponent
-   */
-  public onItemClick(index: number): void {
-    if (this._getSelectedItems().length === 0) {
-      this.data.items[index].isSelected = true;
-      this.inputElements.toArray()[index].nativeElement.focus();
+    // check if multi select active
+    if (this.shiftKeyPressed) {
+      this._selectNextItem(this.selectionEnd! - 1);
     } else {
-      this._resetSelection();
-      this.data.items[index].isSelected = true;
-      this.inputElements.toArray()[index].nativeElement.focus();
+      this._selectItem(this.selectionEnd! - 1);
     }
-    this.lastSelected = index;
+  }
+
+  /**
+   * Handle down key is pressed
+   * if shift is currectly pressed select or unselect other elements
+   * else stop multi-selection
+   * @private
+   * @param {number} index
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleArrowDownPressed(): void {
+    // check if multi select active
+    if (this.shiftKeyPressed) {
+      this._selectNextItem(this.selectionEnd! + 1);
+    } else {
+      if (this.selectionEnd === this.listElements.toArray().length - 1) {
+        this._activateNewItem();
+      } else {
+        this._selectItem(this.selectionEnd! + 1);
+      }
+    }
+  }
+
+  /**
+   * handle escape button press
+   * -> stop selection
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleEscapePressed(): void {
+    if (this.activeElement !== undefined || this.newElementActive) {
+      this.activeElement = undefined;
+      this.newElementActive = false;
+      if (
+        this.selectionStart !== undefined ||
+        this.selectionEnd !== undefined
+      ) {
+        this._focusItem(this.selectionEnd ?? this.selectionStart!);
+      }
+    } else {
+      this.resetSelection();
+    }
+  }
+
+  /**
+   * handle delete button press
+   * -> delete selected items
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleDeletePressed(): void {
+    if (this.selectionStart === undefined) {
+      return;
+    }
+    this.data.items = this.data.items.filter((_, index) => {
+      if (this.selectionStart === index) {
+        return false;
+      }
+      if (this.selectionEnd === undefined) {
+        return true;
+      }
+      return !(
+        (index >= this.selectionStart! && index <= this.selectionEnd) ||
+        (index <= this.selectionStart! && index >= this.selectionEnd)
+      );
+    });
+    this.activeElement = undefined;
+    this.newElementActive = false;
+    var newIndex = Math.min(this.selectionStart!, this.selectionEnd!);
+    if (this.data.items.length === 0) {
+      this.selectionStart = undefined;
+      this.selectionEnd = undefined;
+    } else {
+      this.selectionStart =
+        newIndex >= this.data.items.length
+          ? this.data.items.length - 1
+          : newIndex;
+      this.selectionEnd = this.selectionStart;
+    }
+    this.isDataChanged = true;
+  }
+
+  /**
+   * handle shift button press
+   * -> start or continue multi select
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleShiftPressed(): void {
+    this.shiftKeyPressed = true;
+    this.ctrlKeyPressed = false;
+    this._selectItem(this.selectionEnd!);
+  }
+
+  /**
+   * handle ctrl button press
+   * -> mark ctrl as pressed
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleCtrlPressed(): void {
+    this.ctrlKeyPressed = true;
+    this.shiftKeyPressed = false;
+    this._selectItem(this.selectionEnd!);
+  }
+
+  /**
+   * handle ctrl button press
+   * -> save data when ctrl and s key are pressed together
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleSPressed(): void {
+    if (this.ctrlKeyPressed) {
+      this.saveData();
+    } else if (
+      this.selectionEnd !== undefined &&
+      this.activeElement !== undefined
+    ) {
+      this._activateItem();
+    }
+  }
+
+  /**
+   * handle up button press on new element
+   * -> go to last existing element
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleNewItemArrowUpPressed(): void {
+    this._selectItem(this.data.items.length - 1);
+  }
+
+  /**
+   * reset selected items
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  public resetSelection(): void {
+    this.selectionStart = undefined;
+    this.selectionEnd = undefined;
+    this.activeElement = undefined;
+    this.newElementActive = false;
+  }
+
+  /**
+   * hide this section
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _hideSection(): void {
+    this.data.isVisible = false;
+    this._fileSectionService.updateSection(this.data).subscribe((ok) => {
+      if (ok) {
+        this._fileService.refreshFileData();
+      }
+    });
+  }
+
+  /**
+   * delete this section
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _deleteSection(): void {
+    this._fileSectionService.deleteSection(this.data.id).subscribe((ok) => {
+      if (ok) {
+        this._fileService.refreshFileData();
+      }
+    });
+  }
+
+  /**
+   * handle enter press on new item
+   * -> create new item
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _handleNewItemEnterPressed(): void {
+    if (this.newItem && this.newItem !== '') {
+      this.data.items.push({ value: this.newItem! });
+      this.isDataChanged = true;
+      this.newItem = undefined;
+    }
+  }
+
+  /**
+   * update data
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  public updateData(data: string, index: number): void {
+    if (data === '') {
+      this.data.items.splice(index, 1);
+      this.isDataChanged = true;
+    }
+    this._selectItem(index);
   }
 
   /**
    * save data
-   *
    * @return {*}  {void}
    * @memberof ListSectionComponent
    */
@@ -370,6 +386,109 @@ export class ListSectionComponent implements OnInit {
     this._listSectionService.updateSection(requestData).subscribe((ok) => {
       if (ok) {
         this.isDataChanged = false;
+      }
+    });
+  }
+
+  /**
+   * Get the selection state of the list item with index
+   * @param {index} index
+   * @return {boolean}  selected state of item
+   * @memberof ListSectionComponent
+   */
+  public isSelected(index: number): boolean {
+    if (this.selectionStart === undefined) {
+      return false;
+    }
+    if (this.selectionStart === index) {
+      return true;
+    }
+    if (this.selectionEnd === undefined) {
+      return false;
+    }
+    return (
+      (index >= this.selectionStart && index <= this.selectionEnd) ||
+      (index <= this.selectionStart && index >= this.selectionEnd)
+    );
+  }
+
+  /**
+   *Get the active state of the list item with index
+   * @param {index} index
+   * @return {boolean} selected state of item
+   * @memberof ListSectionComponent
+   */
+  public isActive(index: number): boolean {
+    return this.activeElement !== undefined && this.activeElement === index;
+  }
+
+  /**
+   * activate a list item and focus on it
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _activateItem(): void {
+    this._selectItem(this.selectionEnd!);
+    this.activeElement = this.selectionEnd!;
+    this._focusItem(this.selectionEnd!);
+  }
+
+  /**
+   * activate the new item
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _activateNewItem(): void {
+    this.resetSelection();
+    this.newElementActive = false;
+    // focus input element
+    this.newInputElement.nativeElement.focus();
+  }
+
+  /**
+   * select a item
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _selectItem(index: number): void {
+    this.selectionStart = index;
+    this.selectionEnd = index;
+    this.activeElement = undefined;
+    this.newElementActive = false;
+    this._focusItem(index);
+  }
+
+  /**
+   * select the next item when shift is pressed
+   * @private
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _selectNextItem(index: number): void {
+    this.selectionEnd = index;
+    this._focusItem(index);
+  }
+
+  /**
+   * focus on a item
+   * @private
+   * @param {index} index
+   * @return {*}  {void}
+   * @memberof ListSectionComponent
+   */
+  private _focusItem(index: number): void {
+    var element = this.listElements.toArray()[index].nativeElement;
+    setTimeout(() => {
+      // when input item active
+      if (this.activeElement !== undefined || this.newElementActive) {
+        element.firstElementChild.firstElementChild.focus();
+      }
+      // when span selected
+      else {
+        element.firstElementChild.firstElementChild.focus();
       }
     });
   }

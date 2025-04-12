@@ -1,0 +1,9 @@
+@import "../../styles/theme.scss";
+
+.tag-text {
+  color: $sb-primary;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

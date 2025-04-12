@@ -61,4 +61,6 @@ export abstract class AppConstants {
   public static LOCAL_STORAGE = {
     USER_MAIL: 'user_mail',
   };
+
+  public static REGEX_TAG = /(?<!\/)#(\w+)/g;
 }

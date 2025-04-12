@@ -33,22 +33,33 @@
     </div>
   </div>
   <div class="section-body">
-    <ul>
+    <ul (blur)="resetSelection()">
       <li
-        *ngFor="let item of data.items; index as i"
-        [class.list-item-selected]="item.isSelected === true"
-        (keydown)="onItemKeydown($event, i)"
+        (keydown)="onItemKeydown($event)"
         (keyup)="onItemKeyup($event)"
+        #listItem
+        *ngFor="let item of data.items; index as i"
+        [class.list-item-selected]="isSelected(i)"
         (click)="onItemClick(i)"
       >
-        <input
-          pInputText
-          #input
-          type="text"
-          class="list-section-input"
-          [(ngModel)]="item.value"
-          (keydown.enter)="updateData(item.value, i)"
-        />
+        <div class="list-section-item">
+          <sb-styled-text
+            tabindex="0"
+            class="styled-text"
+            *ngIf="!isActive(i)"
+            [text]="item.value"
+          >
+          </sb-styled-text>
+          <input
+            pInputText
+            type="text"
+            class="list-section-input"
+            [(ngModel)]="item.value"
+            (ngModelChange)="isDataChanged = true"
+            (keydown.enter)="updateData(item.value, i)"
+            *ngIf="isActive(i)"
+          />
+        </div>
       </li>
       <li>
         <input
@@ -58,6 +69,7 @@
           type="text"
           placeholder="..."
           [(ngModel)]="newItem"
+          (ngModelChange)="isDataChanged = true"
           (keydown)="onNewItemKeyUp($event)"
         />
       </li>
