@@ -13,6 +13,7 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
+import { getTagsFromText } from 'src/app/core/helper/getTags.helper';
 
 @Component({
   selector: 'sb-file-list-section',
@@ -36,6 +37,8 @@ export class ListSectionComponent implements OnInit {
   public newElementActive: boolean = false;
 
   public isChangeMetadataDialogVisible: boolean = false;
+
+  public tags: string[] = [];
 
   public isDataChanged: boolean = false;
   public contextMenuItems: MenuItem[] = [
@@ -83,7 +86,6 @@ export class ListSectionComponent implements OnInit {
    * @memberof ListSectionComponent
    */
   public onItemKeydown(event: KeyboardEvent): void {
-    console.log(event);
     switch (event.key) {
       case 'ArrowDown':
         this._handleArrowDownPressed();
@@ -104,8 +106,7 @@ export class ListSectionComponent implements OnInit {
         this._handleCtrlPressed();
         break;
       case 's':
-        event.preventDefault();
-        this._handleSPressed();
+        this._handleSPressed(event);
         break;
       default:
         if (this.selectionEnd !== undefined) {
@@ -160,8 +161,7 @@ export class ListSectionComponent implements OnInit {
         this._handleCtrlPressed();
         break;
       case 's':
-        event.preventDefault();
-        this._handleSPressed();
+        this._handleSPressed(event);
         break;
     }
   }
@@ -280,7 +280,6 @@ export class ListSectionComponent implements OnInit {
   private _handleShiftPressed(): void {
     this.shiftKeyPressed = true;
     this.ctrlKeyPressed = false;
-    this._selectItem(this.selectionEnd!);
   }
 
   /**
@@ -300,8 +299,9 @@ export class ListSectionComponent implements OnInit {
    * @return {*}  {void}
    * @memberof ListSectionComponent
    */
-  private _handleSPressed(): void {
+  private _handleSPressed(event: KeyboardEvent): void {
     if (this.ctrlKeyPressed) {
+      event.preventDefault();
       this.saveData();
     } else if (
       this.selectionEnd !== undefined &&
@@ -397,9 +397,16 @@ export class ListSectionComponent implements OnInit {
    * @memberof ListSectionComponent
    */
   public saveData(): void {
+    this.tags = [];
+    this.data.items.forEach((text) => {
+      var tags = getTagsFromText(text.value);
+      this.tags.push(...tags);
+    });
+
     const requestData: ListSectionUpdateRequestModel = {
       id: this.data.id,
       items: this.data.items.map((d) => d.value),
+      tags: this.tags,
     };
     this._listSectionService.updateSection(requestData).subscribe((ok) => {
       if (ok) {
