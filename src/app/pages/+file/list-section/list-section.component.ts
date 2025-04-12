@@ -131,6 +131,18 @@ export class ListSectionComponent implements OnInit {
   }
 
   /**
+   * handle key up on existing item
+   * @return {*}  {void}
+   * @param {KeyboardEvent} event
+   * @memberof ListSectionComponent
+   */
+  public onNewItemKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Control') {
+      this.ctrlKeyPressed = false;
+    }
+  }
+
+  /**
    * handle button presses on new item input
    * @return {*}  {void}
    * @param {KeyboardEvent} event
@@ -143,6 +155,13 @@ export class ListSectionComponent implements OnInit {
         break;
       case 'Enter':
         this._handleNewItemEnterPressed();
+        break;
+      case 'Control':
+        this._handleCtrlPressed();
+        break;
+      case 's':
+        event.preventDefault();
+        this._handleSPressed();
         break;
     }
   }
@@ -273,7 +292,6 @@ export class ListSectionComponent implements OnInit {
   private _handleCtrlPressed(): void {
     this.ctrlKeyPressed = true;
     this.shiftKeyPressed = false;
-    this._selectItem(this.selectionEnd!);
   }
 
   /**

@@ -71,6 +71,7 @@
           [(ngModel)]="newItem"
           (ngModelChange)="isDataChanged = true"
           (keydown)="onNewItemKeyUp($event)"
+          (keyup)="onNewItemKeyup($event)"
         />
       </li>
     </ul>

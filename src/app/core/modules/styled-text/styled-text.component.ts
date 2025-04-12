@@ -34,7 +34,14 @@ export class StyledTextComponent implements OnInit {
       tooltip: string | undefined;
     }[] = this.text.split(/(\s+)/).map((word) => {
       if (word.startsWith('#')) {
-        return { text: word, isTag: true, tooltip: `Go to ${word}` };
+        return {
+          text: word,
+          isTag: true,
+          tooltip: `Go to ${word}`,
+          isFalseTag: false,
+        };
+      } else if (word.startsWith('/#')) {
+        word = word.replace('/#', '#');
       }
       return { text: word, isTag: false, tooltip: '' };
     });
