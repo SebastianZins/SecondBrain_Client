@@ -1,0 +1,24 @@
+@import "../../../core/styles/theme.scss";
+
+.text-section {
+  textarea {
+    min-height: 50px;
+  }
+
+  .section-body {
+    padding: 1rem;
+  }
+
+  .text-section-content {
+    min-height: 50px;
+    height: fit-content;
+    width: 100%;
+  }
+
+  .styled-text {
+    white-space: pre-line;
+    &:focus-visible {
+      outline: unset;
+    }
+  }
+}

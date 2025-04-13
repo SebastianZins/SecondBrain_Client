@@ -3,8 +3,10 @@ import { ChangeMetadataDialogComponent } from './change-metadata-dialog/change-m
 import { AddSectionDialogComponent } from './add-section-dialog/add-section-dialog.component';
 import { HttpListSectionService } from 'src/app/core/services/http/httpListSection.service';
 import { HttpFileSectionService } from 'src/app/core/services/http/httpFileSection.service';
+import { HttpTextSectionService } from 'src/app/core/services/http/httpTextSection.service';
 import { StyledTextModule } from '../../core/modules/styled-text/styled-text.module';
 import { ListSectionComponent } from './list-section/list-section.component';
+import { TextSectionComponent } from './text-section/text-section.component';
 import { AsyncPipe, CommonModule, NgFor, NgSwitch } from '@angular/common';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FilePageComponent } from './file-page.component';
@@ -12,6 +14,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { DragDropModule } from 'primeng/dragdrop';
+import { TextareaModule } from 'primeng/textarea';
 import { provideRouter } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
@@ -26,6 +29,7 @@ import { NgModule } from '@angular/core';
     TopBarComponent,
     FilePageComponent,
     ListSectionComponent,
+    TextSectionComponent,
     AddSectionDialogComponent,
     ChangeMetadataDialogComponent,
     SectionOverviewDialogComponent,
@@ -39,6 +43,7 @@ import { NgModule } from '@angular/core';
     ButtonModule,
     DialogModule,
     CommonModule,
+    TextareaModule,
     TooltipModule,
     DragDropModule,
     InputTextModule,
@@ -49,6 +54,7 @@ import { NgModule } from '@angular/core';
   providers: [
     provideRouter(routes),
     HttpListSectionService,
+    HttpTextSectionService,
     HttpFileSectionService,
   ],
 })

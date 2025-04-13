@@ -1,0 +1,60 @@
+<sb-change-metadata-dialog
+  [(isVisible)]="isChangeMetadataDialogVisible"
+  [sectionData]="data"
+/>
+
+<div class="section text-section">
+  <div class="section-header" #topBar>
+    <div class="section-header-titles">
+      <h2>{{ data.title }}</h2>
+      <h3>{{ data.subtitle }}</h3>
+    </div>
+    <div class="button-group">
+      <p-button
+        icon="pi pi-save"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="saveData()"
+        *ngIf="isDataChanged"
+      ></p-button>
+      <p-button
+        icon="pi pi-ellipsis-v"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="topBarMenuContext.show($event)"
+      ></p-button>
+      <p-contextmenu
+        #topBarMenuContext
+        [target]="topBar"
+        [model]="contextMenuItems"
+      />
+    </div>
+  </div>
+  <div
+    class="section-body"
+    #textInput
+    (click)="onItemClick()"
+    (keyup)="onItemKeyup($event)"
+    (keydown)="onItemKeydown($event)"
+  >
+    <textarea
+      pTextarea
+      *ngIf="isActive"
+      [(ngModel)]="data.text"
+      (focusout)="isActive = false"
+      class="text-section-content"
+      [autoResize]="true"
+      (ngModelChange)="isDataChanged = true; test()"
+    ></textarea>
+    <div *ngIf="!isActive" class="text-section-content">
+      <sb-styled-text
+        tabindex="0"
+        class="styled-text"
+        [text]="data.text === '' ? '...' : data.text"
+      >
+      </sb-styled-text>
+    </div>
+  </div>
+</div>

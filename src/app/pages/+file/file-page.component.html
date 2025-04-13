@@ -16,6 +16,7 @@
   >
     <ng-container *ngIf="section.isVisible">
       <ng-container [ngSwitch]="section.sectionType">
+        <sb-file-text-section *ngSwitchCase="0" [data]="section" />
         <sb-file-list-section *ngSwitchCase="2" [data]="section" />
         <p-button
           icon="fas fa-plus"

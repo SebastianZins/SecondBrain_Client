@@ -22,6 +22,7 @@ export class FilePageComponent implements OnInit {
     private _fileService: HttpFileService
   ) {
     this.$fileData = _fileService.$selectedFile;
+    this.$fileData.subscribe((a) => console.log(a));
   }
 
   ngOnInit(): void {
