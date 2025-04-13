@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="section-body">
-    <ul (blur)="resetSelection()">
+    <ul (focusout)="resetSelection()">
       <li
         (keydown)="onItemKeydown($event)"
         (keyup)="onItemKeyup($event)"

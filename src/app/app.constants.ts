@@ -5,6 +5,7 @@ export abstract class AppConstants {
   public static FILE_SECTION_URL: string = this.BASE_URL + '/section/metaData';
   public static FILE_STRUCTURE_URL: string = this.BASE_URL + '/fileStructure';
   public static LIST_SECTION_URL: string = this.BASE_URL + '/section/list';
+  public static TEXT_SECTION_URL: string = this.BASE_URL + '/section/text';
   public static USER: string = this.BASE_URL + '/user';
 
   public static END_POINT = {
@@ -34,6 +35,11 @@ export abstract class AppConstants {
       GET_BY_ID: this.LIST_SECTION_URL,
       GET_BY_FILE: this.LIST_SECTION_URL + '/byFile',
       UPDATE: this.LIST_SECTION_URL,
+    },
+    TEXT_SECTION: {
+      GET_BY_ID: this.TEXT_SECTION_URL,
+      GET_BY_FILE: this.TEXT_SECTION_URL + '/byFile',
+      UPDATE: this.TEXT_SECTION_URL,
     },
     FILE_STRUCTURE: {
       GET_STRUCTURE: this.FILE_STRUCTURE_URL,

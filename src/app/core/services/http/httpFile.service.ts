@@ -1,6 +1,7 @@
 import { FileCreateRequestModel } from '../../models/file-structure/file/file-create-request.model';
 import { FileSectionModel } from '../../models/file-section/file-section/file-section.model';
 import { ListSectionModel } from '../../models/file-section/list-section/list-section.model';
+import { TextSectionModel } from '../../models/file-section/text-section/text-section.model';
 import { FileDataModel } from '../../models/file-structure/file/file-data.model';
 import { FileModel } from '../../models/file-structure/file/file.model';
 import { HttpFileStructureService } from './httpFileStructure.service';
@@ -58,11 +59,12 @@ export class HttpFileService {
         var sections = [
           ...(file.checkListSections ?? []),
           ...(file.listSections?.map((ls: ListSectionModel) => {
-            ls.items = ls.items = ls.items.map((i: any) => ({
+            ls.items = ls.items.map((i: any) => ({
               value: i,
             }));
             return ls;
           }) ?? []),
+          ...(file.textSections?.map((ts: TextSectionModel) => ts.text) ?? []),
           ...(file.tableSections ?? []),
           ...(file.overviewSections ?? []),
           ...(file.textSections ?? []),
