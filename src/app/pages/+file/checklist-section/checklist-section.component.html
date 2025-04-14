@@ -1,0 +1,88 @@
+<sb-change-metadata-dialog
+  [(isVisible)]="isChangeMetadataDialogVisible"
+  [sectionData]="data"
+/>
+
+<div class="section checklist-section">
+  <div class="section-header" #topBar>
+    <div class="section-header-titles">
+      <h2>{{ data.title }}</h2>
+      <h3>{{ data.subtitle }}</h3>
+    </div>
+    <div class="button-group">
+      <p-button
+        icon="pi pi-save"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="saveData()"
+        *ngIf="isDataChanged"
+      ></p-button>
+      <p-button
+        icon="pi pi-ellipsis-v"
+        [rounded]="true"
+        size="small"
+        [text]="true"
+        (onClick)="topBarMenuContext.show($event)"
+      ></p-button>
+      <p-contextmenu
+        #topBarMenuContext
+        [target]="topBar"
+        [model]="contextMenuItems"
+      />
+    </div>
+  </div>
+  <div class="section-body" (focusout)="resetSelection()">
+    <div class="checklist-container">
+      <div
+        class="checklist-item"
+        (keydown)="onItemKeydown($event)"
+        (keyup)="onItemKeyup($event)"
+        #listItem
+        *ngFor="let item of data.items; index as i"
+        [class.checklist-item-selected]="isSelected(i)"
+        (click)="onItemClick(i)"
+      >
+        <p-checkbox
+          [ngModel]="item.isChecked"
+          (ngModelChange)="itemChecked(item)"
+          [binary]="true"
+          [tooltipDisabled]="item.checkedDate === null"
+          pTooltip="Checked on {{ item.checkedDate! | date : 'dd.MM.yyyy' }}"
+        />
+        <div class="checklist-section-item">
+          <sb-styled-text
+            tabindex="0"
+            class="styled-text"
+            *ngIf="!isActive(i)"
+            [text]="item.text"
+          >
+          </sb-styled-text>
+          <input
+            pInputText
+            type="text"
+            class="checklist-section-input"
+            [(ngModel)]="item.text"
+            (ngModelChange)="isDataChanged = true"
+            (keydown.enter)="updateData(item.text, i)"
+            *ngIf="isActive(i)"
+          />
+        </div>
+      </div>
+      <div class="checklist-item">
+        <p-checkbox [disabled]="true" />
+        <input
+          #newInput
+          class="checklist-section-input"
+          pInputText
+          type="text"
+          placeholder="..."
+          [(ngModel)]="newItem"
+          (ngModelChange)="isDataChanged = true"
+          (keydown)="onNewItemKeyUp($event)"
+          (keyup)="onNewItemKeyup($event)"
+        />
+      </div>
+    </div>
+  </div>
+</div>
