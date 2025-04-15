@@ -328,6 +328,7 @@ export class ListSectionComponent implements OnInit {
    * @memberof ListSectionComponent
    */
   public resetSelection(): void {
+    console.log('asdasd');
     this.selectionStart = undefined;
     this.selectionEnd = undefined;
     this.activeElement = undefined;
@@ -422,13 +423,7 @@ export class ListSectionComponent implements OnInit {
    * @memberof ListSectionComponent
    */
   public isSelected(index: number): boolean {
-    if (this.selectionStart === undefined) {
-      return false;
-    }
-    if (this.selectionStart === index) {
-      return true;
-    }
-    if (this.selectionEnd === undefined) {
+    if (this.selectionStart === undefined || this.selectionEnd === undefined) {
       return false;
     }
     return (
@@ -507,14 +502,7 @@ export class ListSectionComponent implements OnInit {
   private _focusItem(index: number): void {
     var element = this.listElements.toArray()[index].nativeElement;
     setTimeout(() => {
-      // when input item active
-      if (this.activeElement !== undefined || this.newElementActive) {
-        element.firstElementChild.firstElementChild.focus();
-      }
-      // when span selected
-      else {
-        element.firstElementChild.firstElementChild.focus();
-      }
+      element.firstElementChild.firstElementChild.focus();
     });
   }
 }

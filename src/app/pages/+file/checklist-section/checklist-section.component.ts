@@ -87,6 +87,7 @@ export class CheckChecklistSectionComponent implements OnInit {
    * @memberof ChecklistSectionComponent
    */
   public onItemKeydown(event: KeyboardEvent): void {
+    console.log(event);
     switch (event.key) {
       case 'ArrowDown':
         this._handleArrowDownPressed();
@@ -111,7 +112,7 @@ export class CheckChecklistSectionComponent implements OnInit {
         break;
       default:
         if (this.selectionEnd !== undefined) {
-          this._activateItem();
+          this._activateItem(this.selectionEnd!);
         }
         break;
     }
@@ -203,7 +204,7 @@ export class CheckChecklistSectionComponent implements OnInit {
       this._selectNextItem(this.selectionEnd! + 1);
     } else {
       if (this.selectionEnd === this.listElements.toArray().length - 1) {
-        this._activateNewItem();
+        this._activateNewItem(this.selectionEnd!);
       } else {
         this._selectItem(this.selectionEnd! + 1);
       }
@@ -308,7 +309,7 @@ export class CheckChecklistSectionComponent implements OnInit {
       this.selectionEnd !== undefined &&
       this.activeElement !== undefined
     ) {
-      this._activateItem();
+      this._activateItem(this.selectionEnd!);
     }
   }
 
@@ -458,10 +459,12 @@ export class CheckChecklistSectionComponent implements OnInit {
    * @return {*}  {void}
    * @memberof ChecklistSectionComponent
    */
-  private _activateItem(): void {
-    this._selectItem(this.selectionEnd!);
-    this.activeElement = this.selectionEnd!;
-    this._focusItem(this.selectionEnd!);
+  private _activateItem(index: number): void {
+    this.selectionStart = index;
+    this.selectionEnd = index;
+    this.activeElement = index;
+    this.newElementActive = false;
+    this._focusItem(index);
   }
 
   /**
@@ -470,8 +473,11 @@ export class CheckChecklistSectionComponent implements OnInit {
    * @return {*}  {void}
    * @memberof ChecklistSectionComponent
    */
-  private _activateNewItem(): void {
-    this.resetSelection();
+  private _activateNewItem(index: number): void {
+    this.selectionStart = index;
+    this.selectionEnd = index;
+    this.activeElement = index;
+    this.newElementActive = false;
     this.newElementActive = false;
     // focus input element
     this.newInputElement.nativeElement.focus();

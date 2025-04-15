@@ -12,6 +12,10 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    &:focus-visible {
+      outline: unset;
+    }
   }
 
   .checklist-item-selected {
@@ -40,12 +44,6 @@
     &:focus {
       color: $sb-primary;
       border-bottom: 1px solid $sb-primary;
-    }
-  }
-
-  .styled-text {
-    &:focus-visible {
-      outline: unset;
     }
   }
 }
