@@ -5,6 +5,8 @@ export abstract class AppConstants {
   public static FILE_SECTION_URL: string = this.BASE_URL + '/section/metaData';
   public static FILE_STRUCTURE_URL: string = this.BASE_URL + '/fileStructure';
   public static LIST_SECTION_URL: string = this.BASE_URL + '/section/list';
+  public static CHECKLIST_SECTION_URL: string =
+    this.BASE_URL + '/section/checklist';
   public static TEXT_SECTION_URL: string = this.BASE_URL + '/section/text';
   public static USER: string = this.BASE_URL + '/user';
 
@@ -35,6 +37,11 @@ export abstract class AppConstants {
       GET_BY_ID: this.LIST_SECTION_URL,
       GET_BY_FILE: this.LIST_SECTION_URL + '/byFile',
       UPDATE: this.LIST_SECTION_URL,
+    },
+    CHECKLIST_SECTION: {
+      GET_BY_ID: this.CHECKLIST_SECTION_URL,
+      GET_BY_FILE: this.CHECKLIST_SECTION_URL + '/byFile',
+      UPDATE: this.CHECKLIST_SECTION_URL,
     },
     TEXT_SECTION: {
       GET_BY_ID: this.TEXT_SECTION_URL,

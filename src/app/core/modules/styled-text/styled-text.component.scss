@@ -2,6 +2,7 @@
 
 .tag-text {
   color: $sb-primary;
+  white-space: pre-line;
 
   &:hover {
     cursor: pointer;

@@ -57,7 +57,7 @@ export class HttpFileService {
     this.getFileData(id).subscribe((file: FileDataModel) => {
       if (file) {
         var sections = [
-          ...(file.checkListSections ?? []),
+          ...(file.checkListSections?.map((ls: ListSectionModel) => ls) ?? []),
           ...(file.listSections?.map((ls: ListSectionModel) => {
             ls.items = ls.items.map((i: any) => ({
               value: i,

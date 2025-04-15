@@ -1,0 +1,49 @@
+@import "../../../core/styles/theme.scss";
+
+.checklist-section {
+  .checklist-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1em 0 1em 1rem;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &:focus-visible {
+      outline: unset;
+    }
+  }
+
+  .checklist-item-selected {
+    background-color: $sb-gray-5;
+  }
+
+  .checklist-section-item {
+    width: 100%;
+
+    &:hover {
+      background-color: $sb-gray-4;
+    }
+  }
+
+  .checklist-section-input {
+    width: 100%;
+    border: unset;
+    background: unset;
+    padding: 0;
+    border-radius: 0;
+
+    &:hover {
+      background-color: $sb-gray-4;
+    }
+
+    &:focus {
+      color: $sb-primary;
+      border-bottom: 1px solid $sb-primary;
+    }
+  }
+}

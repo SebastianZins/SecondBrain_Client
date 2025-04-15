@@ -18,6 +18,7 @@
       <ng-container [ngSwitch]="section.sectionType">
         <sb-file-text-section *ngSwitchCase="0" [data]="section" />
         <sb-file-list-section *ngSwitchCase="2" [data]="section" />
+        <sb-file-checklist-section *ngSwitchCase="3" [data]="section" />
         <p-button
           icon="fas fa-plus"
           class="add-section-btn"

@@ -1,8 +1,8 @@
-import { ListSectionUpdateRequestModel } from 'src/app/core/models/file-section/list-section/list-section-update-request.mode';
-import { ListSectionModel } from 'src/app/core/models/file-section/list-section/list-section.model';
-import { HttpListSectionService } from 'src/app/core/services/http/httpListSection.service';
+import { ChecklistSectionModel } from 'src/app/core/models/file-section/checklist-section/checklist-section.model';
+import { HttpChecklistSectionService } from 'src/app/core/services/http/httpChecklistSection.service';
 import { HttpFileSectionService } from 'src/app/core/services/http/httpFileSection.service';
 import { HttpFileService } from 'src/app/core/services/http/httpFile.service';
+import { getTagsFromText } from 'src/app/core/helper/getTags.helper';
 import { MenuItem } from 'primeng/api';
 import {
   ViewChildren,
@@ -13,18 +13,19 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import { getTagsFromText } from 'src/app/core/helper/getTags.helper';
+import { ChecklistSectionUpdateRequestModel } from 'src/app/core/models/file-section/checklist-section/checklist-section-update-request.mode';
+import { ChecklistSectionItemModel } from 'src/app/core/models/file-section/checklist-section/checklist-section-item.model';
 
 @Component({
-  selector: 'sb-file-list-section',
+  selector: 'sb-file-checklist-section',
   standalone: false,
-  templateUrl: './list-section.component.html',
-  styleUrl: './list-section.component.scss',
+  templateUrl: './checklist-section.component.html',
+  styleUrl: './checklist-section.component.scss',
 })
-export class ListSectionComponent implements OnInit {
+export class CheckChecklistSectionComponent implements OnInit {
   @ViewChildren('listItem') listElements!: QueryList<ElementRef>;
   @ViewChild('newInput') newInputElement!: ElementRef;
-  @Input() data!: ListSectionModel;
+  @Input() data!: ChecklistSectionModel;
 
   public newItem?: string;
 
@@ -57,7 +58,7 @@ export class ListSectionComponent implements OnInit {
   ];
 
   constructor(
-    private _listSectionService: HttpListSectionService,
+    private _checklistSectionService: HttpChecklistSectionService,
     private _fileSectionService: HttpFileSectionService,
     private _fileService: HttpFileService
   ) {}
@@ -68,7 +69,7 @@ export class ListSectionComponent implements OnInit {
    * handle existing item clicked
    * @return {*}  {void}
    * @param {number} index
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public onItemClick(index: number): void {
     this._selectItem(index);
@@ -83,9 +84,10 @@ export class ListSectionComponent implements OnInit {
    * @return {*}  {void}
    * @param {number} index
    * @param {KeyboardEvent} event
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public onItemKeydown(event: KeyboardEvent): void {
+    console.log(event);
     switch (event.key) {
       case 'ArrowDown':
         this._handleArrowDownPressed();
@@ -110,7 +112,7 @@ export class ListSectionComponent implements OnInit {
         break;
       default:
         if (this.selectionEnd !== undefined) {
-          this._activateItem();
+          this._activateItem(this.selectionEnd!);
         }
         break;
     }
@@ -120,7 +122,7 @@ export class ListSectionComponent implements OnInit {
    * handle key up on existing item
    * @return {*}  {void}
    * @param {KeyboardEvent} event
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public onItemKeyup(event: KeyboardEvent): void {
     if (event.key === 'Shift') {
@@ -135,7 +137,7 @@ export class ListSectionComponent implements OnInit {
    * handle key up on existing item
    * @return {*}  {void}
    * @param {KeyboardEvent} event
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public onNewItemKeyup(event: KeyboardEvent): void {
     if (event.key === 'Control') {
@@ -147,7 +149,7 @@ export class ListSectionComponent implements OnInit {
    * handle button presses on new item input
    * @return {*}  {void}
    * @param {KeyboardEvent} event
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public onNewItemKeyUp(event: KeyboardEvent): void {
     switch (event.key) {
@@ -173,7 +175,7 @@ export class ListSectionComponent implements OnInit {
    * @private
    * @param {number} index
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleArrowUpPressed(): void {
     if (this.selectionEnd === 0) {
@@ -194,7 +196,7 @@ export class ListSectionComponent implements OnInit {
    * @private
    * @param {number} index
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleArrowDownPressed(): void {
     // check if multi select active
@@ -202,7 +204,7 @@ export class ListSectionComponent implements OnInit {
       this._selectNextItem(this.selectionEnd! + 1);
     } else {
       if (this.selectionEnd === this.listElements.toArray().length - 1) {
-        this._activateNewItem();
+        this._activateNewItem(this.selectionEnd!);
       } else {
         this._selectItem(this.selectionEnd! + 1);
       }
@@ -214,7 +216,7 @@ export class ListSectionComponent implements OnInit {
    * -> stop selection
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleEscapePressed(): void {
     if (this.activeElement !== undefined || this.newElementActive) {
@@ -236,7 +238,7 @@ export class ListSectionComponent implements OnInit {
    * -> delete selected items
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleDeletePressed(): void {
     if (this.selectionStart === undefined) {
@@ -275,7 +277,7 @@ export class ListSectionComponent implements OnInit {
    * -> start or continue multi select
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleShiftPressed(): void {
     this.shiftKeyPressed = true;
@@ -286,7 +288,7 @@ export class ListSectionComponent implements OnInit {
    * handle ctrl button press
    * -> mark ctrl as pressed
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleCtrlPressed(): void {
     this.ctrlKeyPressed = true;
@@ -297,7 +299,7 @@ export class ListSectionComponent implements OnInit {
    * handle ctrl button press
    * -> save data when ctrl and s key are pressed together
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleSPressed(event: KeyboardEvent): void {
     if (this.ctrlKeyPressed) {
@@ -307,7 +309,7 @@ export class ListSectionComponent implements OnInit {
       this.selectionEnd !== undefined &&
       this.activeElement !== undefined
     ) {
-      this._activateItem();
+      this._activateItem(this.selectionEnd!);
     }
   }
 
@@ -316,7 +318,7 @@ export class ListSectionComponent implements OnInit {
    * -> go to last existing element
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleNewItemArrowUpPressed(): void {
     this._selectItem(this.data.items.length - 1);
@@ -325,10 +327,9 @@ export class ListSectionComponent implements OnInit {
   /**
    * reset selected items
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public resetSelection(): void {
-    console.log('asdasd');
     this.selectionStart = undefined;
     this.selectionEnd = undefined;
     this.activeElement = undefined;
@@ -339,7 +340,7 @@ export class ListSectionComponent implements OnInit {
    * hide this section
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _hideSection(): void {
     this.data.isVisible = false;
@@ -354,7 +355,7 @@ export class ListSectionComponent implements OnInit {
    * delete this section
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _deleteSection(): void {
     this._fileSectionService.deleteSection(this.data.id).subscribe((ok) => {
@@ -369,11 +370,15 @@ export class ListSectionComponent implements OnInit {
    * -> create new item
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _handleNewItemEnterPressed(): void {
     if (this.newItem && this.newItem !== '') {
-      this.data.items.push({ value: this.newItem! });
+      this.data.items.push({
+        text: this.newItem!,
+        isChecked: false,
+        checkedDate: null,
+      });
       this.isDataChanged = true;
       this.newItem = undefined;
     }
@@ -382,7 +387,7 @@ export class ListSectionComponent implements OnInit {
   /**
    * update data
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public updateData(data: string, index: number): void {
     if (data === '') {
@@ -395,21 +400,21 @@ export class ListSectionComponent implements OnInit {
   /**
    * save data
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public saveData(): void {
     this.tags = [];
     this.data.items.forEach((text) => {
-      var tags = getTagsFromText(text.value);
+      var tags = getTagsFromText(text.text);
       this.tags.push(...tags);
     });
 
-    const requestData: ListSectionUpdateRequestModel = {
+    const requestData: ChecklistSectionUpdateRequestModel = {
       id: this.data.id,
-      items: this.data.items.map((d) => d.value),
+      items: this.data.items,
       tags: this.tags,
     };
-    this._listSectionService.updateSection(requestData).subscribe((ok) => {
+    this._checklistSectionService.updateSection(requestData).subscribe((ok) => {
       if (ok) {
         this.isDataChanged = false;
       }
@@ -420,10 +425,16 @@ export class ListSectionComponent implements OnInit {
    * Get the selection state of the list item with index
    * @param {index} index
    * @return {boolean}  selected state of item
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public isSelected(index: number): boolean {
-    if (this.selectionStart === undefined || this.selectionEnd === undefined) {
+    if (this.selectionStart === undefined) {
+      return false;
+    }
+    if (this.selectionStart === index) {
+      return true;
+    }
+    if (this.selectionEnd === undefined) {
       return false;
     }
     return (
@@ -436,7 +447,7 @@ export class ListSectionComponent implements OnInit {
    *Get the active state of the list item with index
    * @param {index} index
    * @return {boolean} selected state of item
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   public isActive(index: number): boolean {
     return this.activeElement !== undefined && this.activeElement === index;
@@ -446,22 +457,27 @@ export class ListSectionComponent implements OnInit {
    * activate a list item and focus on it
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
-  private _activateItem(): void {
-    this._selectItem(this.selectionEnd!);
-    this.activeElement = this.selectionEnd!;
-    this._focusItem(this.selectionEnd!);
+  private _activateItem(index: number): void {
+    this.selectionStart = index;
+    this.selectionEnd = index;
+    this.activeElement = index;
+    this.newElementActive = false;
+    this._focusItem(index);
   }
 
   /**
    * activate the new item
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
-  private _activateNewItem(): void {
-    this.resetSelection();
+  private _activateNewItem(index: number): void {
+    this.selectionStart = index;
+    this.selectionEnd = index;
+    this.activeElement = index;
+    this.newElementActive = false;
     this.newElementActive = false;
     // focus input element
     this.newInputElement.nativeElement.focus();
@@ -471,7 +487,7 @@ export class ListSectionComponent implements OnInit {
    * select a item
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _selectItem(index: number): void {
     this.selectionStart = index;
@@ -485,7 +501,7 @@ export class ListSectionComponent implements OnInit {
    * select the next item when shift is pressed
    * @private
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _selectNextItem(index: number): void {
     this.selectionEnd = index;
@@ -497,12 +513,25 @@ export class ListSectionComponent implements OnInit {
    * @private
    * @param {index} index
    * @return {*}  {void}
-   * @memberof ListSectionComponent
+   * @memberof ChecklistSectionComponent
    */
   private _focusItem(index: number): void {
     var element = this.listElements.toArray()[index].nativeElement;
     setTimeout(() => {
-      element.firstElementChild.firstElementChild.focus();
+      // when input item active
+      if (this.activeElement !== undefined || this.newElementActive) {
+        element.firstElementChild.firstElementChild.focus();
+      }
+      // when span selected
+      else {
+        element.firstElementChild.firstElementChild.focus();
+      }
     });
+  }
+
+  public itemChecked(item: ChecklistSectionItemModel): void {
+    this.isDataChanged = true;
+    item.isChecked = !item.isChecked;
+    item.checkedDate = item.isChecked ? new Date().getTime() : null;
   }
 }

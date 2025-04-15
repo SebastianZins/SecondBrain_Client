@@ -1,5 +1,7 @@
 import { SectionOverviewDialogComponent } from './section-overview-dialog/section-overview-dialog.component';
 import { ChangeMetadataDialogComponent } from './change-metadata-dialog/change-metadata-dialog.component';
+import { HttpChecklistSectionService } from 'src/app/core/services/http/httpChecklistSection.service';
+import { CheckChecklistSectionComponent } from './checklist-section/checklist-section.component';
 import { AddSectionDialogComponent } from './add-section-dialog/add-section-dialog.component';
 import { HttpListSectionService } from 'src/app/core/services/http/httpListSection.service';
 import { HttpFileSectionService } from 'src/app/core/services/http/httpFileSection.service';
@@ -15,6 +17,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { DragDropModule } from 'primeng/dragdrop';
 import { TextareaModule } from 'primeng/textarea';
+import { CheckboxModule } from 'primeng/checkbox';
 import { provideRouter } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
@@ -33,6 +36,7 @@ import { NgModule } from '@angular/core';
     AddSectionDialogComponent,
     ChangeMetadataDialogComponent,
     SectionOverviewDialogComponent,
+    CheckChecklistSectionComponent,
   ],
   imports: [
     NgFor,
@@ -43,8 +47,9 @@ import { NgModule } from '@angular/core';
     ButtonModule,
     DialogModule,
     CommonModule,
-    TextareaModule,
     TooltipModule,
+    CheckboxModule,
+    TextareaModule,
     DragDropModule,
     InputTextModule,
     StyledTextModule,
@@ -56,6 +61,7 @@ import { NgModule } from '@angular/core';
     HttpListSectionService,
     HttpTextSectionService,
     HttpFileSectionService,
+    HttpChecklistSectionService,
   ],
 })
 export class FilePageModule {}
